@@ -6,7 +6,8 @@ sc.settings.verbosity = 0
 import warnings
 warnings.filterwarnings('ignore')
 
-def auto_annot(data, cluster, species = 'Mm'):
+def auto_annot(adata, cluster, species = 'Mm'):
+    data = adata.copy()
     db = pd.read_table('https://raw.githubusercontent.com/Xenon8778/Auto_cell_annot/main/PanglaoDB_markers_27_Mar_2020.tsv', sep = '\t')
     db_sub = db[['species','official gene symbol','cell type','ubiquitousness index']]
 
@@ -25,13 +26,12 @@ def auto_annot(data, cluster, species = 'Mm'):
     db_prep[0:10]
 
     for i in tqdm(range(len(db_prep))):
-        bdata = data.copy()
         try:
-            sc.tl.score_genes(bdata, db_prep[i][1], score_name= db_prep[i][0])
+            sc.tl.score_genes(data, db_prep[i][1], score_name= db_prep[i][0])
         except:
             pass
         try:
-            df = bdata.obs[[cluster,db_prep[i][0]]]
+            df = data.obs[[cluster,db_prep[i][0]]]
             if i == 0:
                 df_out = df.groupby(cluster).mean()
             else:
