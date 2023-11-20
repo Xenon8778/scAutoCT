@@ -23,8 +23,6 @@ def auto_annot(adata, cluster, species = 'Mm'):
         x2 = [i,x1]
         db_prep.append(x2)
 
-    db_prep[0:10]
-
     for i in tqdm(range(len(db_prep))):
         try:
             sc.tl.score_genes(data, db_prep[i][1], score_name= db_prep[i][0])
@@ -38,8 +36,6 @@ def auto_annot(adata, cluster, species = 'Mm'):
                 df_out = pd.concat([df_out,df.groupby(cluster).mean()], axis= 1)
         except:
             pass
-
-    #df_out
 
     maxValueIndex = df_out.idxmax(axis=1)
     res = pd.concat([maxValueIndex,df_out.max(axis=1)], axis = 1)
