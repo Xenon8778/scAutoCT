@@ -39,7 +39,7 @@ def auto_annot(adata, cluster, species = 'Mm'):
         except:
             pass
 
-    df_out
+    #df_out
 
     maxValueIndex = df_out.idxmax(axis=1)
     res = pd.concat([maxValueIndex,df_out.max(axis=1)], axis = 1)
