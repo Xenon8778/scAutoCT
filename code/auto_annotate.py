@@ -6,7 +6,7 @@ sc.settings.verbosity = 0
 import warnings
 warnings.filterwarnings('ignore')
 
-def auto_annot(adata, cluster, species = 'Mm'):
+def auto_annot(adata, cluster, species = 'Mm', cutoff = 0.25):
     # Read anndata object
     data = adata.copy() 
 
@@ -25,8 +25,6 @@ def auto_annot(adata, cluster, species = 'Mm'):
             x1 = [x.capitalize() for x in x1]
         x2 = [i,x1]
         db_prep.append(x2)
-
-    # db_prep[0:10]
 
     # Annotate each cluster 
     for i in tqdm(range(len(db_prep))):
@@ -49,4 +47,5 @@ def auto_annot(adata, cluster, species = 'Mm'):
     maxValueIndex = df_out.idxmax(axis=1)
     res = pd.concat([maxValueIndex,df_out.max(axis=1)], axis = 1)
     res.columns = ['Cell Type','Score']
+    res['Cell Type Conf'] = [res['Cell Type'][i] if res['Score'][i]> cutoff else 'Unknown' for i in res.index]
     return(res)
