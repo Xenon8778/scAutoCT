@@ -4,8 +4,8 @@ Automatic annotation of single-cells post-clustering in Python using and the Pan
 ## Steps to run
 
 Pull the git folder into your working directory 
-```python
-!git clone https://github.com/Xenon8778/Auto_cell_annot
+```bash
+git clone https://github.com/Xenon8778/Auto_cell_annot
 ```
 
 Loading and running the function
