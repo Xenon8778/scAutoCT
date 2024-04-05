@@ -12,7 +12,7 @@ new_cluster_names = list(res['Cell Type Conf'])
 Replacing Leiden (or any other clustering algorithm labels) with cell types -
 ```python
 
-Cell_dict = dict(zip(list(np.arange(0, len(np.unique(adata.obs['leiden'])),1)), new_cluster_names))
+Cell_dict = dict(zip(list(np.arange(0, len(np.unique(data.obs['leiden'])),1)), new_cluster_names))
 data.obs['Auto_labels'] = data.obs['leiden']
 data.obs['Auto_labels'] = data.obs['Auto_labels'].astype(int).map(Cell_dict)
 res
