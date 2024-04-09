@@ -1,8 +1,7 @@
 # Auto_cell_annot
 Automatic annotation of single-cells post-clustering in Python using and the PanglaoDB marker database.
 
-## Steps to run
-
+## Intructions
 Pull the git folder into your working directory 
 ```bash
 git clone https://github.com/Xenon8778/Auto_cell_annot
@@ -22,3 +21,6 @@ data.obs['Auto_labels'] = data.obs['leiden']
 data.obs['Auto_labels'] = data.obs['Auto_labels'].astype(int).map(Cell_dict)
 res
 ```
+## Databases
+- PangaloDB. https://doi.org/10.1093%2Fdatabase%2Fbaz046
+- CellMarker2.0. [10.1093/nar/gkac947](https://doi.org/10.1093/nar/gkac947)
