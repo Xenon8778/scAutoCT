@@ -22,5 +22,5 @@ data.obs['Auto_labels'] = data.obs['Auto_labels'].astype(int).map(Cell_dict)
 res
 ```
 ## Databases
-- PangaloDB. https://doi.org/10.1093%2Fdatabase%2Fbaz046
-- CellMarker2.0. [10.1093/nar/gkac947](https://doi.org/10.1093/nar/gkac947)
+- PangaloDB. https://doi.org/10.1093/database/baz046
+- CellMarker2.0. https://doi.org/10.1093/nar/gkac947
