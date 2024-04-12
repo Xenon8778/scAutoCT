@@ -10,8 +10,7 @@ git clone https://github.com/Xenon8778/scAutoCT
 Loading and running the function
 ```python
 from scAutoCT.code.auto_annotate import auto_annot
-res  = auto_annot(data, cluster='leiden', species='Mm')
-new_cluster_names = list(res['Cell Type Conf'])
+res  = auto_annot(adata, cluster='louvain', species='Hs', db='Panglao', tissuelist = ['Immune system'], cutoff=0.1)
 res
 ```
 Replacing Leiden (or any other clustering algorithm labels) with cell types -
