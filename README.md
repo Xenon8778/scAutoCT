@@ -1,4 +1,4 @@
-# scAutoCT
+# scAutoCT [Under Development]
 Automatic annotation of single-cells post-clustering in Python using the PanglaoDB and CellMarker2.0 database.
 
 ## Instructions
