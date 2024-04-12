@@ -4,12 +4,12 @@ Automatic annotation of single-cells post-clustering in Python using and the Pan
 ## Intructions
 Pull the git folder into your working directory 
 ```bash
-git clone https://github.com/Xenon8778/Auto_cell_annot
+git clone https://github.com/Xenon8778/scAutoCT
 ```
 
 Loading and running the function
 ```python
-from Auto_cell_annot.code.auto_annotate import auto_annot
+from scAutoCT.code.auto_annotate import auto_annot
 res  = auto_annot(data, cluster='leiden', species='Mm')
 new_cluster_names = list(res['Cell Type Conf'])
 ```
