@@ -12,14 +12,13 @@ Loading and running the function
 from scAutoCT.code.auto_annotate import auto_annot
 res  = auto_annot(data, cluster='leiden', species='Mm')
 new_cluster_names = list(res['Cell Type Conf'])
+res
 ```
 Replacing Leiden (or any other clustering algorithm labels) with cell types -
 ```python
-
-Cell_dict = dict(zip(list(np.arange(0, len(np.unique(data.obs['leiden'])),1)), new_cluster_names))
-data.obs['Auto_labels'] = data.obs['leiden']
-data.obs['Auto_labels'] = data.obs['Auto_labels'].map(Cell_dict)
-res
+Cell_dict = dict(zip(res.index.tolist(), res['Cell Type'].tolist()))
+adata.obs['Auto_labels'] = adata.obs['louvain']
+adata.obs['Auto_labels'] = adata.obs['Auto_labels'].map(Cell_dict)
 ```
 ## Databases
 - PangaloDB. https://doi.org/10.1093/database/baz046
