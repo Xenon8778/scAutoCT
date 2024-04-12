@@ -20,27 +20,48 @@ def auto_annot(adata, cluster, db = 'Panglao', tissuelist = ['All'],
     # Read anndata object
     data = adata.copy() 
 
+    # Scale data
+    print('Scaling...')
+    sc.pp.scale(data)
+
     # Selecting Database
 
     ## PanglaoDB database PMID: 30951143
     if db == 'Panglao':
-        print('Using PanglaoDB')
-        # Load PanglaoDB Database
-        db = pd.read_table('https://raw.githubusercontent.com/Xenon8778/Auto_cell_annot/main/data/PanglaoDB_markers_27_Mar_2020.tsv', sep = '\t')
-        db_sub = db[['species','official gene symbol','cell type','ubiquitousness index']]
+        if species == 'Mm':
+            print('Using PanglaoDB')
+            file = pd.read_csv('../data/PanglaoDB_2020_Mouse.csv')
+            
+            #Subsetting by Tissue
+            if 'All' in tissuelist:
+                file = file
+            else:
+                file = file[file['Tissue'].isin(tissuelist)].reset_index()
 
-        # Selecting species and subsetting database
-        db_sub = db_sub[(db_sub['species'] == species) | (db_sub['species'] == 'Mm Hs') | (db_sub['species'] == 'Hs Mm')]
-        db_sub = db_sub[db_sub['ubiquitousness index'] < 0.1]
-
-        db_prep = []
-        for i in np.unique(db_sub['cell type']):
-            x1 = [x for x in db_sub[db_sub['cell type'] == i]['official gene symbol']]
-            if species == 'Mm':
-                x1 = [x.capitalize() for x in x1]
-            x2 = [i,x1]
-            db_prep.append(x2)
-        print('Database Prepped')
+            db_prep = [] 
+            for i in range(file.shape[0]):
+                a = file['CT'][i]
+                b = file['Gene'][i].split(',') 
+                db_prep.append([a,b])
+            db_prep
+            print('Database Prepped')
+        else: 
+            print('Using PanglaoDB')
+            file = pd.read_csv('../data/PanglaoDB_2020_Human.csv')
+            
+            #Subsetting by Tissue
+            if 'All' in tissuelist:
+                file = file
+            else:
+                file = file[file['Tissue'].isin(tissuelist)].reset_index()
+            
+            db_prep = [] 
+            for i in range(file.shape[0]):
+                a = file['CT'][i]
+                b = file['Gene'][i].split(',') 
+                db_prep.append([a,b])
+            db_prep
+            print('Database Prepped')
 
     ## CellMarker2.0 database PMID: 36300619
     elif db == 'CellMarker':
@@ -48,56 +69,51 @@ def auto_annot(adata, cluster, db = 'Panglao', tissuelist = ['All'],
         
         # Mouse 
         if (species == 'Mm'):
-            # Load CellMarker Database
-            db = pd.read_csv('https://github.com/Xenon8778/Auto_cell_annot/raw/main/data/Cell_marker_Mouse.csv')
-            db_sub = db[['species','Symbol','cell_name','tissue_class']]
-            print(db_sub['tissue_class'].unique())
-
-            if tissuelist == 'All': 
-                db_sub = db_sub
+            file = pd.read_csv('../data/CellMarker2_Mouse_Aug.csv')
+            
+            #Subsetting by Tissue
+            if 'All' in tissuelist:
+                file = file
             else:
-                db_sub = db_sub[db_sub['tissue_class'].isin(tissuelist)]
+                file = file[file['Tissue'].isin(tissuelist)].reset_index()
 
-            db_prep = []
-            for i in np.unique(db_sub['cell_name']):
-                x1 = [x for x in db_sub[db_sub['cell_name'] == i]['Symbol']]
-                x1 = [j for j in x1 if str(j) != 'nan']
-                if len(x1) > 1:
-                    x2 = [i,x1]
-                    db_prep.append(x2)
+            db_prep = [] 
+            for i in range(file.shape[0]):
+                a = file['CT'][i]
+                b = file['Gene'][i].split(',') 
+                db_prep.append([a,b])
+            db_prep
 
         # Human or others    
         else:
-            db = pd.read_csv('https://github.com/Xenon8778/Auto_cell_annot/raw/main/data/Cell_marker_Human.csv')
-            db_sub = db[['species','Symbol','cell_name','tissue_class']]
-            print(db_sub['tissue_class'].unique())
-
-            if tissuelist == 'All': 
-                db_sub = db_sub
+            file = pd.read_csv('../data/CellMarker2_Human_Aug.csv')
+            
+            #Subsetting by Tissue
+            if 'All' in tissuelist:
+                file = file
             else:
-                db_sub = db_sub[db_sub['tissue_class'].isin(tissuelist)]
-
-            db_prep = []
-            for i in np.unique(db_sub['cell_name']):
-                x1 = [x for x in db_sub[db_sub['cell_name'] == i]['Symbol']]
-                x1 = [j for j in x1 if str(j) != 'nan']
-                if len(x1) > 1:
-                    x2 = [i,x1]
-                    db_prep.append(x2)
+                file = file[file['Tissue'].isin(tissuelist)].reset_index()
+            
+            db_prep = [] 
+            for i in range(file.shape[0]):
+                a = file['CT'][i]
+                b = file['Gene'][i].split(',') 
+                db_prep.append([a,b])
+            db_prep
+            
         print('Database Prepped')
 
     # Annotating each cluster 
+    df_out = pd.DataFrame(index= adata.obs[cluster].unique())
     for i in tqdm(range(len(db_prep))):
         try:
-            sc.tl.score_genes(data, db_prep[i][1], score_name= db_prep[i][0])
+            sc.tl.score_genes(data, db_prep[i][1], score_name= db_prep[i][0], ctrl_size = 100,
+                                n_bins = 24, random_state = 1)
         except:
             pass
         try:
             df = data.obs[[cluster,db_prep[i][0]]]
-            if i == 0:
-                df_out = df.groupby(cluster).mean()
-            else:
-                df_out = pd.concat([df_out,df.groupby(cluster).mean()], axis= 1)
+            df_out[db_prep[i][0]] = df.groupby(cluster).mean()
         except:
             pass
 
