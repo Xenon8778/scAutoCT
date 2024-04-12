@@ -30,7 +30,7 @@ def auto_annot(adata, cluster, db = 'Panglao', tissuelist = ['All'],
     if db == 'Panglao':
         if species == 'Mm':
             print('Using PanglaoDB')
-            file = pd.read_csv('../data/PanglaoDB_2020_Mouse.csv')
+            file = pd.read_csv('scAutoCT/data/PanglaoDB_2020_Mouse.csv')
             
             #Subsetting by Tissue
             if 'All' in tissuelist:
@@ -47,7 +47,7 @@ def auto_annot(adata, cluster, db = 'Panglao', tissuelist = ['All'],
             print('Database Prepped')
         else: 
             print('Using PanglaoDB')
-            file = pd.read_csv('../data/PanglaoDB_2020_Human.csv')
+            file = pd.read_csv('scAutoCT/data/PanglaoDB_2020_Human.csv')
             
             #Subsetting by Tissue
             if 'All' in tissuelist:
@@ -69,7 +69,7 @@ def auto_annot(adata, cluster, db = 'Panglao', tissuelist = ['All'],
         
         # Mouse 
         if (species == 'Mm'):
-            file = pd.read_csv('../data/CellMarker2_Mouse_Aug.csv')
+            file = pd.read_csv('scAutoCT/data/CellMarker2_Mouse_Aug.csv')
             
             #Subsetting by Tissue
             if 'All' in tissuelist:
@@ -86,7 +86,7 @@ def auto_annot(adata, cluster, db = 'Panglao', tissuelist = ['All'],
 
         # Human or others    
         else:
-            file = pd.read_csv('../data/CellMarker2_Human_Aug.csv')
+            file = pd.read_csv('scAutoCT/data/CellMarker2_Human_Aug.csv')
             
             #Subsetting by Tissue
             if 'All' in tissuelist:
