@@ -1,7 +1,7 @@
 # scAutoCT
 Automatic annotation of single-cells post-clustering in Python using the PanglaoDB and CellMarker2.0 database.
 
-## Intructions
+## Instructions
 Pull the git folder into your working directory 
 ```bash
 git clone https://github.com/Xenon8778/scAutoCT
